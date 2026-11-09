@@ -1,0 +1,43 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": "Synthetic pilot. Only semver (npm) and packaging (uv/pep621) may be updated.",
+  "extends": [],
+  "enabledManagers": ["npm", "pep621"],
+  "rangeStrategy": "pin",
+  "dependencyDashboard": false,
+  "automerge": false,
+  "platformAutomerge": false,
+  "prConcurrentLimit": 2,
+  "prHourlyLimit": 2,
+  "branchConcurrentLimit": 2,
+  "lockFileMaintenance": { "enabled": false },
+  "labels": ["renovate-pilot"],
+  "packageRules": [
+    {
+      "description": "Deny by default: nothing is updated unless allowed below.",
+      "matchPackageNames": ["*"],
+      "enabled": false
+    },
+    {
+      "description": "Allow only npm semver, own PR, package.json + package-lock.json.",
+      "matchManagers": ["npm"],
+      "matchPackageNames": ["semver"],
+      "enabled": true,
+      "groupName": null,
+      "additionalBranchPrefix": "npm-"
+    },
+    {
+      "description": "Allow only uv packaging, own PR, pyproject.toml + uv.lock.",
+      "matchManagers": ["pep621"],
+      "matchPackageNames": ["packaging"],
+      "enabled": true,
+      "groupName": null,
+      "additionalBranchPrefix": "py-"
+    },
+    {
+      "description": "Major upgrades need explicit approval: disabled (placed last so it wins).",
+      "matchUpdateTypes": ["major"],
+      "enabled": false
+    }
+  ]
+}
